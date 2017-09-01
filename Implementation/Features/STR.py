@@ -1,4 +1,5 @@
 from nltk import sent_tokenize, word_tokenize
+import numpy as np
 
 def STR(text):
 	''' function to extract structural features from a review as per 
@@ -15,5 +16,5 @@ def STR(text):
 			exclam_sentences   += 1
 
 	average_sentence_len = words/len(sentences)
-	return (words, len(sentences), average_sentence_len, question_sentences, exclam_sentences)
+	return np.array((words, len(sentences), average_sentence_len, question_sentences, exclam_sentences))
 

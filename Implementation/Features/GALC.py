@@ -16,20 +16,17 @@ def get_GALC_dic(GALC_dic_loc):
                 if item.endswith('*'):
                     item = item[:-1]
                 GALC_dic[item] = index
-    
-    return dic
-
 
 def GALC(text):
 	''' function to extract the GALC features of a review '''
 	if not GALC_dic :
 		raise ValueError("GALC dictionary is not loaded")
 		
-	features = [0]*GALC_dic
+	features = np.zeros(GALC_dimensions)
 	words = word_tokenize(text)		
 	for word in words:
 		containsPrefix = False
-		for prefix in GALC_dic.keys():
+		for prefix in GALC_dic:
 			if word.startswith(prefix):
 				features[GALC_dic[prefix]] += 1
 				containsPrefix = True
