@@ -25,12 +25,12 @@ def INQUIRER(text):
 	for features
 	might explore better ways to idetify which form of word to use such as WORD#2 etc'''
 	if not INQUIRER_dic :
-		raise ValueError("GALC dictionary is not loaded")
+		raise ValueError("INQUIRER dictionary is not loaded")
 
 	features = np.zeros(INQUIRER_dim)
 	words = word_tokenize(text)		
 	for word in words:
-		word_caps = word.upper
+		word_caps = word.upper()
 		if word_caps in INQUIRER_dic:
 			features += INQUIRER_dic[word_caps]
 		elif (word_caps+"#1") in INQUIRER_dic:
