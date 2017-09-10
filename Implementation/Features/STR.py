@@ -18,3 +18,11 @@ def STR(text):
 	average_sentence_len = words/len(sentences)
 	return np.array((words, len(sentences), average_sentence_len, question_sentences, exclam_sentences))
 
+def get_STR_features(reviews):
+	''' function to get the matrix of features of all reviews '''
+	feature_vectors = []
+
+	for review in reviews:
+		feature_vectors.append(STR(review))
+
+	return np.array(feature_vectors, dtype=float)

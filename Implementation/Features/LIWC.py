@@ -5,10 +5,10 @@ LIWC_dic = {}
 LIWC_prefixes = []
 LIWC_dim = 0
 
-def create_LIWC_dim_maps(path, dim_map):
+def create_LIWC_dim_maps(LIWC_dic_loc, dim_map):
 	global LIWC_dim
 	dim_idx = 0
-	with open(path) as f:
+	with open(LIWC_dic_loc) as f:
 		for i, l in enumerate(f):
 			if i == 0:
 				continue
@@ -20,9 +20,9 @@ def create_LIWC_dim_maps(path, dim_map):
 			dim_idx += 1
 		LIWC_dim = dim_idx
 
-def compute_prefixes(path, start_line):
+def compute_prefixes(LIWC_dic_loc, start_line):
 	global LIWC_prefixes
-	with open(path) as f:
+	with open(LIWC_dic_loc) as f:
 		for i, l in enumerate(f):
 			if i < start_line:
 				continue
@@ -30,9 +30,9 @@ def compute_prefixes(path, start_line):
 			if target.endswith('*'):
 				LIWC_prefixes.append(target[:-1])
 
-def create_dictionary(path, start_line, dim_map):
+def create_dictionary(LIWC_dic_loc, start_line, dim_map):
 	global LIWC_dic
-	with open(path) as f:
+	with open(LIWC_dic_loc) as f:
 		for i, l in enumerate(f):
 			if i < start_line:
 				continue
@@ -70,3 +70,14 @@ def LIWC(text):
 					features += LIWC_dic[prefix]
 					break
 	return features
+
+def get_LIWC_features(reviews, LIWC_dic_loc=None, start_line=None):
+	''' function to get the matrix of features of all reviews '''
+	if LIWC_dic_loc is not None:
+		get_LIWC_dic(LIWC_dic_loc, start_line)
+	feature_vectors = []
+
+	for review in reviews:
+		feature_vectors.append(LIWC(review))
+
+	return np.array(feature_vectors, dtype=float)

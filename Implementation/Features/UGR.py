@@ -23,6 +23,9 @@ def tf_idf_matrix(reviews):
 	vectorizer = TfidfVectorizer(ngram_range=(1,1), stop_words=stopwords.words('english'))
 	return vectorizer.fit_transform(filter_reviews)
 
+def get_UGR_features(reviews):
+	return tf_idf_matrix(reviews)
+
 #for testing
 def main():
 	documents = ["Human machine interface for lab abc computer applications",

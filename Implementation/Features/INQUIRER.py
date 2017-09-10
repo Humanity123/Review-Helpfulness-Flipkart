@@ -15,8 +15,8 @@ def get_INQUIRER_dic(INQUIRER_dic_loc):
 	if len(df.columns[1:]) is not INQUIRER_dim :
 		raise ValueError("INQUIRER dictionary contains different number of features as assumed")
 
-    for index, row in df.iterrows():
-    	INQUIRER_dic[row[0]] = np.array(pd.isnull(row[1:0]), dtype=int)
+	for index, row in df.iterrows():
+		INQUIRER_dic[row[0]] = np.array(~ pd.isnull(row[1:]), dtype=float)
 
 
 def INQUIRER(text):
@@ -37,5 +37,15 @@ def INQUIRER(text):
 			features += INQUIRER_dic[word_caps+"#1"]
 
 	return features
-        
-   
+
+
+def get_INQUIRER_features(reviews, INQUIRER_dic_loc=None):
+	''' function to get the matrix of features of all reviews '''
+	if INQUIRER_dic_loc is not None:
+		get_INQUIRER_dic(INQUIRER_dic_loc)
+	features_vectors = []
+
+	for review in reviews:
+		features_vectors.append(INQUIRER(review))
+
+	return np.array(features_vectors, dtype=float)

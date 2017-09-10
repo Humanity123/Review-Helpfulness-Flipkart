@@ -10,12 +10,12 @@ def get_GALC_dic(GALC_dic_loc):
 	with key value same as the word roots and values as their index 
 	in the feature vector'''
 	df = pd.read_csv(GALC_dic_loc,dtype=str)
-    for index, row in df.iterrows():
-        for item in row[1:]:
-            if not pd.isnull(item):
-                if item.endswith('*'):
-                    item = item[:-1]
-                GALC_dic[item] = index
+	for index, row in df.iterrows():
+		for item in row[1:]:
+			if not pd.isnull(item):
+				if item.endswith('*'):
+					item = item[:-1]
+				GALC_dic[item] = index
 
 def GALC(text):
 	''' function to extract the GALC features of a review '''
@@ -36,4 +36,13 @@ def GALC(text):
 
 	return features
 
+def get_GALC_features(reviews, GALC_dic_loc=None):
+	''' function to get the matrix of features of all reviews '''
+	if GALC_dic_loc is not None:
+		get_GALC_dic(GALC_dic_loc)
+	feature_vectors = []
 
+	for review in reviews:
+		feature_vectors.append(GALC(review))
+
+	return np.array(feature_vectors, dtype=float)
