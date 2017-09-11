@@ -41,7 +41,7 @@ def INQUIRER(text):
 
 def get_INQUIRER_features(reviews, INQUIRER_dic_loc=None):
 	''' function to get the matrix of features of all reviews '''
-	if INQUIRER_dic_loc is not None:
+	if INQUIRER_dic_loc is None:
 		get_INQUIRER_dic(INQUIRER_dic_loc)
 	features_vectors = []
 

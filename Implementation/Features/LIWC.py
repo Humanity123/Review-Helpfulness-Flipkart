@@ -1,10 +1,15 @@
 import numpy as np
 from nltk import word_tokenize
 
+'We will require the LIWC dictionary and the list of prefixes to compute the feature vector for LIWC technique'
+
 LIWC_dic = {}
 LIWC_prefixes = []
 LIWC_dim = 0
 
+
+
+#maps the feature representative words to consecutive indices
 def create_LIWC_dim_maps(LIWC_dic_loc, dim_map):
 	global LIWC_dim
 	dim_idx = 0
@@ -20,6 +25,7 @@ def create_LIWC_dim_maps(LIWC_dic_loc, dim_map):
 			dim_idx += 1
 		LIWC_dim = dim_idx
 
+#records the prefixes from the set of words and prefixes
 def compute_prefixes(LIWC_dic_loc, start_line):
 	global LIWC_prefixes
 	with open(LIWC_dic_loc) as f:
@@ -30,6 +36,7 @@ def compute_prefixes(LIWC_dic_loc, start_line):
 			if target.endswith('*'):
 				LIWC_prefixes.append(target[:-1])
 
+#creates the dictionary for LIWC
 def create_dictionary(LIWC_dic_loc, start_line, dim_map):
 	global LIWC_dic
 	with open(LIWC_dic_loc) as f:
@@ -47,12 +54,14 @@ def create_dictionary(LIWC_dic_loc, start_line, dim_map):
 				actual_dims[dim_map[d]]=1
 			LIWC_dic[word] = actual_dims
 
+#function to get the LIWC dict up
 def get_LIWC_dic(LIWC_dic_loc, start_line):
 	dim_map = {}
 	create_LIWC_dim_maps(LIWC_dic_loc, dim_map)
 	compute_prefixes(LIWC_dic_loc, start_line)
 	create_dictionary(LIWC_dic_loc, start_line, dim_map)
 
+#function to get the feature vector for a given review
 def LIWC(text):
 	global LIWC_dim, LIWC_dic, LIWC_prefixes
 	if not LIWC_dic :
@@ -60,6 +69,9 @@ def LIWC(text):
 
 	features = np.zeros(LIWC_dim)
 	words = word_tokenize(text)		
+	
+	'''For every word, check if it is already in the dict => it has a complete match with a prefix or word'''
+	'''Else, for every prefix in list check the prefix is a prefix for the word, if yes add the corresponding feature'''
 	for word in words:
 		word_small = word.lower()
 		if word_small in LIWC_dic:
@@ -73,7 +85,7 @@ def LIWC(text):
 
 def get_LIWC_features(reviews, LIWC_dic_loc=None, start_line=None):
 	''' function to get the matrix of features of all reviews '''
-	if LIWC_dic_loc is not None:
+	if LIWC_dic_loc is None:
 		get_LIWC_dic(LIWC_dic_loc, start_line)
 	feature_vectors = []
 

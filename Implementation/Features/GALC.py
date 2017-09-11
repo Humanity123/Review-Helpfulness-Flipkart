@@ -38,7 +38,7 @@ def GALC(text):
 
 def get_GALC_features(reviews, GALC_dic_loc=None):
 	''' function to get the matrix of features of all reviews '''
-	if GALC_dic_loc is not None:
+	if GALC_dic_loc is None:
 		get_GALC_dic(GALC_dic_loc)
 	feature_vectors = []
 
