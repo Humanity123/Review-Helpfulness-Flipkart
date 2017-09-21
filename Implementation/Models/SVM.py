@@ -1,13 +1,18 @@
 from sklearn.svm import SVR
 from sklearn.metrics import mean_squared_error
+import os
+from random import shuffle
 import sys
 sys.path.append("../Features")
+sys.path.append("../Parsers")
 
-import STR
-import UGR
-import GALC
-import LIWC
-import INQUIRER
+from STR import *
+from UGR import *
+from GALC import *
+from LIWC import *
+from INQUIRER import *
+
+from McParser import *
 
 STR_features_extractor = [get_STR_features]
 UGR_features_extractor = [get_UGR_features]
@@ -35,6 +40,7 @@ def get_labels(reviews):
 	''' function to get the matrix of labels/values of the labelled reviews'''
 
 
+
 def get_trained_SVR(reviews, labels, feature_extractors):
 	''' function to get the trained SVR according to the given feature extractors'''
 	X, Y = (get_features(reviews, feature_extractors), labels)
@@ -43,7 +49,7 @@ def get_trained_SVR(reviews, labels, feature_extractors):
 
 	return svr
 
-def test_SVR(reviews, labels, svr):
+def test_SVR(reviews, labels, feature_extractors, svr):
 	''' function to test the trained SVR'''
 	X, Y = (get_features(reviews, feature_extractors), labels)
 	Y_pred = svr.predict(X)
@@ -51,14 +57,16 @@ def test_SVR(reviews, labels, svr):
 	return mean_squared_error(Y, Y_pred)
 
 def main():
-	train_reviews, train_labels, test_reviews, test_labels = ()
+	direc = "/home/kushagra/Documents/BTP/my_work/acl_data/reviews/electronics/"
+	rev_data = get_all_rev_data(direc)
+	train_reviews, train_labels, test_reviews, test_labels = split_train_test_data(rev_data,0.512)
 	test_cases = [STR_features_extractor, UGR_features_extractor, GALC_features_extractor, LIWC_feature_extractor, INQUIRER_feature_extractor, SEMANTIC_features_extractor, ALL_features_extractor]
 	test_case_results = []
 
 	for test_case in test_cases:
-		test_case_results.append(test_SVR(test_reviews, test_labels, get_trained_SVR(train_reviews, train_labels, test_case) ) )
+		test_case_results.append(test_SVR(test_reviews, test_labels, test_case, get_trained_SVR(train_reviews, train_labels, test_case) ) )
 
 	return test_case_results
 	
-if __name__ == "__main__"
+if __name__ == "__main__":
 	main()
