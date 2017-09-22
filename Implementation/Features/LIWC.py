@@ -85,7 +85,7 @@ def LIWC(text):
 
 def get_LIWC_features(reviews, LIWC_dic_loc=None, start_line=None):
 	''' function to get the matrix of features of all reviews '''
-	if LIWC_dic_loc is None:
+	if LIWC_dic_loc is not None:
 		get_LIWC_dic(LIWC_dic_loc, start_line)
 	feature_vectors = []
 

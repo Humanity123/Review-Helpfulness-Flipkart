@@ -1,5 +1,6 @@
-import os
 from random import shuffle
+import os
+import numpy as np
 
 def get_rev_data(file):
 	''' returns pair of review and real valued score in the given file'''
@@ -9,6 +10,8 @@ def get_rev_data(file):
 		line = fobj.readline()
 		val = line.split(" ")[1].rstrip().split("/")
 		score = float(val[0])/float(val[1])
+		fobj.readline()
+		fobj.readline()
 		for line in fobj:
 			text = text + line.rstrip()
 		text = " ".join(text.split()[1:])
@@ -28,6 +31,6 @@ def split_train_test_data(reviews_data, split_factor):
 	''' Splits the the data into train and test data randomly as per split ratio'''
 	shuffle(reviews_data)
 	scores_reviews = zip(*reviews_data)
-	scores = scores_reviews[0]
-	reviews = scores_reviews[1]
-	return reviews[0:int(len(reviews)*split_factor)], scores[0:int(len(scores)*split_factor)], reviews[int(len(reviews)*split_factor)+1:int(len(reviews))-1], scores[int(len(scores)*split_factor)+1:int(len(scores))-1]
+	scores = np.array(scores_reviews[0])
+	reviews = np.array(scores_reviews[1])
+	return reviews[:int(len(reviews)*split_factor)], scores[:int(len(scores)*split_factor)], reviews[int(len(reviews)*split_factor):], scores[int(len(scores)*split_factor):]
