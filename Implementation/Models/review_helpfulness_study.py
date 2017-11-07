@@ -46,7 +46,6 @@ def get_variance_product_dic(product_review_dic):
 			variance_product_dic[variance] = [product]
 		else:
 			variance_product_dic[variance].append(product)
-
 	return variance_product_dic
 
 
