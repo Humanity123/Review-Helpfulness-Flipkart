@@ -10,21 +10,20 @@ def star_rating_distribution(product_reviews):
 	review_star_rating_dict ={1.0:0, 2.0:0, 3.0:0, 4.0:0, 5.0:0}
 	product_star_rating_dict={1.0:0, 2.0:0, 3.0:0, 4.0:0, 5.0:0}
 	product_ratings         = []
-
 	for reviews in product_reviews:
 		product_ratings.append(np.mean([review['star_rating'] for review in reviews]))
 		product_star_rating_dict[round(product_ratings[-1])] += 1
-
 		for review in reviews:
 			review_star_rating_dict[review['star_rating']] += 1
-
+	total_rev = np.sum(review_star_rating_dict.values())
 	review_star_rating_dict['mean'] = np.sum([key*value for key,value in review_star_rating_dict.items()]) / np.sum(review_star_rating_dict.values())
+	review_star_rating_dict['total'] = total_rev
 	product_star_rating_dict['mean'] = np.mean(product_ratings)
 
 	return (review_star_rating_dict, product_star_rating_dict)
 
 def main():
-	with open("/Users/yash/Documents/Acads/BTP/data/reviews/camera_data/uk/camera_uk_dict.txt", "r") as review_file:
+	with open("okok_dict.txt", "r") as review_file:
 		review_list = json.load(review_file)
 	product_reviews = []
 	reviews = []
